@@ -21,6 +21,7 @@ pub mod iomuxc;
 pub mod iomuxc_snvs;
 pub mod lpi2c;
 pub mod lpuart;
+pub mod wdt;
 
 use cortexm7::{
     generic_isr, hard_fault_handler, initialize_ram_jump_to_main, svc_handler, systick_handler,

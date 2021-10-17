@@ -46,6 +46,7 @@ struct Teensy40 {
 
     scheduler: &'static RoundRobinSched<'static>,
     systick: cortexm7::systick::SysTick,
+    watchdog: &'static imxrt1060::wdt::Wdt,
 }
 
 impl SyscallDriverLookup for Teensy40 {
@@ -71,7 +72,7 @@ impl KernelResources<imxrt1060::chip::Imxrt10xx<imxrt1060::chip::Imxrt10xxDefaul
     type ProcessFault = ();
     type Scheduler = RoundRobinSched<'static>;
     type SchedulerTimer = cortexm7::systick::SysTick;
-    type WatchDog = ();
+    type WatchDog = imxrt1060::wdt::Wdt;
     type ContextSwitchCallback = ();
 
     fn syscall_driver_lookup(&self) -> &Self::SyscallDriverLookup {
@@ -90,7 +91,7 @@ impl KernelResources<imxrt1060::chip::Imxrt10xx<imxrt1060::chip::Imxrt10xxDefaul
         &self.systick
     }
     fn watchdog(&self) -> &Self::WatchDog {
-        &()
+        &self.watchdog
     }
     fn context_switch_callback(&self) -> &Self::ContextSwitchCallback {
         &()
@@ -131,7 +132,7 @@ unsafe fn get_peripherals() -> &'static mut imxrt1060::chip::Imxrt10xxDefaultPer
     let ccm = static_init!(imxrt1060::ccm::Ccm, imxrt1060::ccm::Ccm::new());
     let peripherals = static_init!(
         imxrt1060::chip::Imxrt10xxDefaultPeripherals,
-        imxrt1060::chip::Imxrt10xxDefaultPeripherals::new(ccm)
+        imxrt1060::chip::Imxrt10xxDefaultPeripherals::new(ccm),
     );
 
     peripherals
@@ -320,6 +321,7 @@ pub unsafe fn main() {
 
         scheduler,
         systick: cortexm7::systick::SysTick::new_with_calibration(792_000_000),
+        watchdog: &peripherals.wdt,
     };
 
     //

@@ -36,6 +36,7 @@ pub struct Imxrt10xxDefaultPeripherals {
     pub lpuart2: crate::lpuart::Lpuart<'static>,
     pub gpt1: crate::gpt::Gpt1<'static>,
     pub gpt2: crate::gpt::Gpt2<'static>,
+    pub wdt: crate::wdt::Wdt,
 }
 
 impl Imxrt10xxDefaultPeripherals {
@@ -53,6 +54,7 @@ impl Imxrt10xxDefaultPeripherals {
             lpuart2: crate::lpuart::Lpuart::new_lpuart2(ccm),
             gpt1: crate::gpt::Gpt1::new_gpt1(ccm),
             gpt2: crate::gpt::Gpt2::new_gpt2(ccm),
+            wdt: crate::wdt::Wdt::new(),
         }
     }
 }

@@ -3,6 +3,8 @@
 TARGET=thumbv7em-none-eabi
 PLATFORM=teensy40
 
+APP=../../../libtock-c/examples/led_on_spin/build/cortex-m7/cortex-m7.tbf
+
 include ../Makefile.common
 
 # Default target for installing the kernel.
